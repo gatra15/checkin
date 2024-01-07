@@ -44,19 +44,10 @@
                                                                 return response.text(); // Ubah ke response.json() jika respons adalah JSON
                                                             })
                                                             .then(data => {
-                                                                const newDiv = document.createElement('div');
-                                                                newDiv.classList.add('container'); // Menambahkan class 'container' pada div
-
-                                                                const newText = document.createElement('p');
-                                                                newText.classList.add(
-                                                                'text-danger'); // Menambahkan class 'text-red' pada elemen <p>
-                                                                newText.textContent =
-                                                                data; // Tambahkan konten ke dalam elemen <p>
-
-                                                                newDiv.appendChild(newText); // Menambahkan elemen <p> ke dalam div
-
-                                                                const card1 = document.getElementById('card1');
-                                                                card1.insertAdjacentElement('afterend', newDiv);
+                                                                Swal.fire({
+                                                                    icon: 'info',
+                                                                    text: data,
+                                                                })
                                                             })
                                                             .catch(error => {
                                                                 console.error('Error:', error);
