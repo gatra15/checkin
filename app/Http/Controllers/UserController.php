@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Stevebauman\Location\Facades\Location;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -92,10 +93,11 @@ class UserController extends Controller
     public function checkIn(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nik' => 'required',
+            'nik' => 'required|unique:users',
             'name' => 'required',
         ], [
             'nik.required' => 'NIK wajib diisi',
+            'nik.unique' => 'Mohon maaf Anda sudah pernah melakukan Check In',
             'name.required' => 'Nama wajib diisi'
         ]);
 
@@ -107,7 +109,6 @@ class UserController extends Controller
         }
 
         $credentials = $request->only('nik');
-
         if ($credentials !== null) {
             DB::beginTransaction();
             // Authentication successful, create session
@@ -137,6 +138,7 @@ class UserController extends Controller
                 return redirect()->back()->with('error', 'Invalid credentials');
             }
         }
+        
 
         // Authentication failed, redirect back with error
         return redirect()->back()->with('error', 'Invalid credentials');

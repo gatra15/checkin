@@ -20,7 +20,15 @@
                                     <input type="text" class="form-control" id="nik" name="nik"
                                         placeholder="Masukkan NIK" value="{{ old('nik') }}">
                                     @error('nik')
-                                        <div class="text-danger">{{ $message }}</div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                Swal.fire({
+                                                    icon: 'warning',
+                                                    title: 'Oops...',
+                                                    text: '{{ $message }}'
+                                                })
+                                            });
+                                        </script>
                                     @enderror
                                 </div>
                             </div>
@@ -30,7 +38,15 @@
                                     <input type="text" class="form-control" id="name" name="name"
                                         placeholder="Masukkan Nama" value="{{ old('name') }}">
                                     @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            Swal.fire({
+                                                icon: 'warning',
+                                                title: 'Oops...',
+                                                text: '{{ $message }}'
+                                            })
+                                        });
+                                    </script>
                                     @enderror
                                 </div>
                             </div>
