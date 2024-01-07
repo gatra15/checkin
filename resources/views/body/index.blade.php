@@ -3,13 +3,13 @@
 @section('content')
     <div class="container" style="height: 100vh;">
         <div class="row justify-content-center align-items-center" style="height: 100%;">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title text-center">HUT DAPENBUN KE-48</h5>
                     </div>
                     <div class="card-body d-flex align-items-center">
-                        <img src="{{ asset('img/logo_dapenbun.png') }}" class="me-4" style="max-width: 100px;"
+                        <img src="{{ asset('img/logo_dapenbun.png') }}" class="me-4" style="max-width: 150px;"
                             alt="Logo">
 
                         <form action="{{ route('checkin') }}" method="POST" class="w-100">
