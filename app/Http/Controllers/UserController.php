@@ -138,7 +138,6 @@ class UserController extends Controller
                 return redirect()->back()->with('error', 'Invalid credentials');
             }
         }
-        
 
         // Authentication failed, redirect back with error
         return redirect()->back()->with('error', 'Invalid credentials');
@@ -153,6 +152,17 @@ class UserController extends Controller
         ]);
         Auth::logout();
         session()->flush();
+        $message = 'User '.$user->name.' dengan NIK '.$user->nik.' telah melakukan Check Out pada pukul '.Carbon::parse($user->checkout)->setTimezone($user->timezone)->format('H:i:s');
+        return $message;
+    }
+
+    public function postSession(Request $request){
+        if($request->nik !== null)
+        {
+            $user = User::where('nik', $request->nik)->first();
+            return 'User '.$user->name.' dengan NIK '.$user->nik.' telah melakukan Check Out pada pukul '.Carbon::parse($user->checkout)->setTimezone($user->timezone)->format('H:i:s');
+        }
+
         return redirect('/');
     }
 }

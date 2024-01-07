@@ -13,7 +13,7 @@
                             alt="Logo">
 
 
-                        <form action="{{ route('checkout') }}" method="POST" class="w-100">
+                        <form class="w-100" id="myForm">
                             @csrf
                             <div class="row">
                                 <div class="col-md-11">
@@ -33,3 +33,42 @@
         </div>
     </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Menangkap event submit form
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah default behavior submit form
+
+            checkIn();
+        });
+
+        // Fungsi yang akan dipanggil saat form disubmit
+        function checkIn() {
+            fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => {
+                    // Mendapatkan konten dari respons
+                    return response.text(); // Ubah ke response.json() jika respons adalah JSON
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'info',
+                        text: data,
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                            window.location.href = '/';
+                        }
+                    })
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+</script>

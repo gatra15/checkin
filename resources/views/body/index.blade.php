@@ -4,7 +4,7 @@
     <div class="container" style="height: 100vh;">
         <div class="row justify-content-center align-items-center" style="height: 100%;">
             <div class="col-md-5">
-                <div class="card">
+                <div class="card" id='card1'>
                     <div class="card-header">
                         <h5 class="card-title text-center">HUT DAPENBUN KE-48</h5>
                     </div>
@@ -21,11 +21,47 @@
                                         placeholder="Masukkan NIK" value="{{ old('nik') }}">
                                     @error('nik')
                                         <script>
-                                            document.addEventListener('DOMContentLoaded', function () {
+                                            document.addEventListener('DOMContentLoaded', function() {
                                                 Swal.fire({
                                                     icon: 'warning',
                                                     title: 'Oops...',
                                                     text: '{{ $message }}'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        fetch('/session', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                                },
+                                                                body: JSON.stringify({
+                                                                    // Data yang ingin Anda kirim dalam permintaan POST
+                                                                    nik: document.getElementById('nik').value,
+                                                                })
+                                                            })
+                                                            .then(response => {
+                                                                // Mendapatkan konten dari respons
+                                                                return response.text(); // Ubah ke response.json() jika respons adalah JSON
+                                                            })
+                                                            .then(data => {
+                                                                const newDiv = document.createElement('div');
+                                                                newDiv.classList.add('container'); // Menambahkan class 'container' pada div
+
+                                                                const newText = document.createElement('p');
+                                                                newText.classList.add(
+                                                                'text-danger'); // Menambahkan class 'text-red' pada elemen <p>
+                                                                newText.textContent =
+                                                                data; // Tambahkan konten ke dalam elemen <p>
+
+                                                                newDiv.appendChild(newText); // Menambahkan elemen <p> ke dalam div
+
+                                                                const card1 = document.getElementById('card1');
+                                                                card1.insertAdjacentElement('afterend', newDiv);
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Error:', error);
+                                                            });
+                                                    }
                                                 })
                                             });
                                         </script>
@@ -38,15 +74,16 @@
                                     <input type="text" class="form-control" id="name" name="name"
                                         placeholder="Masukkan Nama" value="{{ old('name') }}">
                                     @error('name')
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            Swal.fire({
-                                                icon: 'warning',
-                                                title: 'Oops...',
-                                                text: '{{ $message }}'
-                                            })
-                                        });
-                                    </script>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                Swal.fire({
+                                                    icon: 'warning',
+                                                    title: 'Oops...',
+                                                    text: '{{ $message }}',
+                                                    confirmButtonText: 'OK',
+                                                })
+                                            });
+                                        </script>
                                     @enderror
                                 </div>
                             </div>
@@ -59,6 +96,11 @@
                         </form>
                     </div>
                 </div>
+                @if (session('data'))
+                    <div class="container">
+                        <p class='text-danger' id='err'>{{ session('data') }}</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -29,3 +29,4 @@ Route::get('/', function(){
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 Route::post('/checkin', [UserController::class, 'checkIn'])->name('checkin');
 Route::post('/checkout', [UserController::class, 'checkOut'])->name('checkout');
+Route::post('/session', [UserController::class, 'postSession'])->name('postSession');
